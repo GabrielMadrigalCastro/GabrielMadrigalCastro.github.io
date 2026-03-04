@@ -1,29 +1,109 @@
+/* Windows 95 Desktop & Font */
 body {
-	background: #111;
-	color: #eee;
-	font-family: monospace;
-	padding: 20px;
+    background-color: #008080; /* Classic Teal */
+    font-family: "MS Sans Serif", Arial, sans-serif;
+    display: flex;
+    justify-content: center;    padding: 20px;
+    margin: 0;
+    color: #000;
+}
+
+/* Main Application Window */
+#app {
+    background-color: #c0c0c0;
+    width: 100%;
+    max-width: 500px;
+    border: 2px solid;
+    border-color: #ffffff #808080 #808080 #ffffff; /* Beveled Outset */
+    box-shadow: 1px 1px 0 0 #000;
+    padding: 3px;
+}
+
+/* Title Bar */
+h1 {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+    padding: 3px 5px;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Status Bar & Panels */
+#status {
+    font-size: 12px;
+    padding: 4px;
+    margin-bottom: 10px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080; /* Beveled Inset */
 }
 
 .panel {
-	border: 1px solid #444;
-	padding: 10px;
-	margin-top: 10px;
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080; /* Beveled Inset */
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #dfdfdf;
+}
+
+h3 {
+    font-size: 13px;
+    margin: 0 0 10px 0;
+}/* Text Report Area */
+pre {
+    background: white;
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    padding: 5px;
+    border: 1px solid #808080;
+    margin: 0;
+    overflow-x: auto;
+}
+
+/* Forms & Controls */
+label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 8px;
 }
 
 input {
-	width: 80px;
-	margin-left: 10px;
+    width: 60px;
+    float: right;
+    font-family: "MS Sans Serif", Arial;
+    font-size: 12px;
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080; /* Inset */
+    padding: 2px;
 }
 
+/* Classic Button */
 button {
-	padding: 5px 10px;
-	background: #333;
-	color: white;
-	border: 1px solid #555;
-	cursor: pointer;
+    font-family: "MS Sans Serif", Arial;
+    font-size: 12px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #ffffff #808080 #808080 #ffffff; /* Outset */
+    padding: 4px 15px;
+    cursor: pointer;
+    outline: none;
 }
 
-button:hover {
-	background: #555;
+button:active {
+    border-color: #808080 #ffffff #ffffff #808080; /* Inset on click */
+    padding: 5px 14px 3px 16px; /* Shift text slightly */
+}
+
+/* Responsive Scaling */
+@media (max-width: 480px) {
+    #app {
+        width: 95%;
+    }
+    input {
+        float: none;
+        display: block;
+        margin-top: 5px;
+    }
 }
