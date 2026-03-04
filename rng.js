@@ -1,11 +1,11 @@
- ================================
- DUKEDOM - RANDOM SYSTEMS
- Exact mechanical distributions
- ================================
+// ================================
+// DUKEDOM - RANDOM SYSTEMS
+// Exact mechanical distributions
+// ================================
 
- --------------------------------
- Base Interface (optional helper)
- --------------------------------
+// --------------------------------
+//Base Interface (optional helper)
+//--------------------------------
 
 export class RNG {
     random(curve) {
@@ -13,9 +13,9 @@ export class RNG {
     }
 }
 
- ================================
- GAUSSIAN SYSTEM (Exact Port)
- ================================
+//================================
+//GAUSSIAN SYSTEM (Exact Port)
+//================================
 
 export class Gaussian extends RNG {
 
@@ -53,9 +53,9 @@ export class Gaussian extends RNG {
     }
 }
 
- ================================
- TALBOT RANDOM (Exact Port)
- ================================
+//================================
+//TALBOT RANDOM (Exact Port)
+//================================
 
 export class Talbot extends RNG {
 
