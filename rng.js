@@ -1,8 +1,16 @@
+// ================================
+// RANDOM SYSTEMS
+// ================================
+
 export class RNG {
     random(curve) {
-        throw new Error(RNG must implement random(curve));
+        throw new Error("RNG must implement random(curve)");
     }
 }
+
+// ================================
+// GAUSSIAN
+// ================================
 
 export class Gaussian extends RNG {
 
@@ -21,16 +29,17 @@ export class Gaussian extends RNG {
     }
 
     _gauss(mean, dev, min, max) {
+
         let u = 0, v = 0;
 
         while (u === 0) u = Math.random();
         while (v === 0) v = Math.random();
 
         const num =
-            Math.sqrt(-2.0  Math.log(u)) 
-            Math.cos(2.0  Math.PI  v);
+            Math.sqrt(-2.0 * Math.log(u)) *
+            Math.cos(2.0 * Math.PI * v);
 
-        const val = Math.round(mean + dev  num);
+        const val = Math.round(mean + dev * num);
 
         return Math.min(max, Math.max(min, val));
     }
@@ -39,6 +48,10 @@ export class Gaussian extends RNG {
         return this._gauss(0.5, 1.5, -3, 2) + this.means[curve - 1];
     }
 }
+
+// ================================
+// TALBOT
+// ================================
 
 export class Talbot extends RNG {
 
@@ -49,7 +62,7 @@ export class Talbot extends RNG {
     }
 
     fnr(a, b) {
-        return Math.round(Math.random()  (1 + b - a) + a);
+        return Math.round(Math.random() * (1 + b - a) + a);
     }
 
     initTable() {
@@ -59,15 +72,15 @@ export class Talbot extends RNG {
             [5, 6], [3, 6], [3, 8], [1, 8]
         ];
 
-        pairs.forEach((pair, i) = {
+        pairs.forEach((pair, i) => {
 
             const [a, b] = pair;
 
             const r1 = this.fnr(a, b);
 
-            if (this.fnr(a, b)  5) {
+            if (this.fnr(a, b) > 5) {
                 this.table[i] =
-                    Math.round((r1 + this.fnr(a, b))  2);
+                    Math.round((r1 + this.fnr(a, b)) / 2);
             } else {
                 this.table[i] = r1;
             }
@@ -81,5 +94,4 @@ export class Talbot extends RNG {
     random(curve) {
         return this.fnx(curve - 1);
     }
-
 }
