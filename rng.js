@@ -1,21 +1,8 @@
-// ================================
-// DUKEDOM - RANDOM SYSTEMS
-// Exact mechanical distributions
-// ================================
-
-// --------------------------------
-//Base Interface (optional helper)
-//--------------------------------
-
 export class RNG {
     random(curve) {
         throw new Error(RNG must implement random(curve));
     }
 }
-
-//================================
-//GAUSSIAN SYSTEM (Exact Port)
-//================================
 
 export class Gaussian extends RNG {
 
@@ -52,10 +39,6 @@ export class Gaussian extends RNG {
         return this._gauss(0.5, 1.5, -3, 2) + this.means[curve - 1];
     }
 }
-
-//================================
-//TALBOT RANDOM (Exact Port)
-//================================
 
 export class Talbot extends RNG {
 
@@ -98,4 +81,5 @@ export class Talbot extends RNG {
     random(curve) {
         return this.fnx(curve - 1);
     }
+
 }
