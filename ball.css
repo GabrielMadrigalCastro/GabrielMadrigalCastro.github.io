@@ -1,0 +1,81 @@
+/* Windows 95 Desktop and Font */
+body {
+    background-color: #008080; /* Classic Teal */
+    color: #000;
+    font-family: "MS Sans Serif", Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 20px;
+    margin: 0;
+}
+
+/* Main Application Window */
+body::before {
+    content: "Mini Tennis.exe";
+    display: block;    width: 820px;
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 3px 5px;    box-sizing: border-box;
+    text-align: left;
+}
+
+/* Window Body */
+body {
+    background-color: #c0c0c0;
+    border: 2px solid;    border-color: #ffffff #808080 #808080 #ffffff;    box-shadow: 1px 1px 0 0 #000;
+    width: fit-content;
+    margin: 50px auto;
+}
+
+/* Header Text */
+h1 {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #000;
+}
+
+/* Scoreboard - Inset Sunken Look */
+.scoreboard {
+    background-color: #000;
+    color: #00ff00; /* Retro Digital Green */
+    font-family: 'Courier New', monospace;
+    font-size: 32px;
+    padding: 5px 20px;
+    margin-bottom: 15px;
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080; /* Inset bevel */
+    display: inline-block;
+}
+
+/* Game Canvas - Sunken Border */
+canvas {
+    background-color: #1e8f3e;
+    border: 3px solid;    border-color: #808080 #ffffff #ffffff #808080; /* Inset bevel */
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Controls Hint */
+p {
+    background: #c0c0c0;
+    padding: 5px;
+    font-size: 12px;
+    border-top: 1px solid #808080;
+    width: 100%;
+    margin-top: 15px;
+    box-sizing: border-box;
+}
+
+/* Responsive Scaling */
+@media (max-width: 850px) {
+    body::before, body {
+        width: 95%;
+    }
+    canvas {
+        width: 100%;
+        height: auto;
+    }}

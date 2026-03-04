@@ -46,12 +46,17 @@ body {
     align-items: center;
 }
 
-.video-wrapper iframe {
+.video-placeholder {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 19 / 9;
     border: 2px solid;
     border-color: #808080 #ffffff #ffffff #808080; /* Beveled Inset */
-    display: block;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px;
+    font-weight: bold;
 }
 
 /* Image Gallery Grid */
@@ -63,8 +68,10 @@ body {
 }
 
 .images a {
+	position: relative;
+	overflow: hidden;
     text-decoration: none;
-    display: block;
+    display: inline-block;
 }
 
 .images img {
@@ -74,6 +81,32 @@ body {
     display: block;    border: 2px solid;
     border-color: #ffffff #808080 #808080 #ffffff;
 }
+
+.images a::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, white 2px, transparent 3px);
+    background-size: 40px 40px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: sparkleMove 3s linear infinite;
+    pointer-events: none;
+}
+
+.images a:hover::after {
+    opacity: 0.6;
+}
+
+
+@keyframes sparkleMove {
+    from { transform: translate(0, 0); }
+    to { transform: translate(40px, 40px); }
+}
+
 
 /* Button Click Effect */
 .images img:active {
