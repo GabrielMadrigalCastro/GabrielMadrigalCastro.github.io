@@ -1,130 +1,167 @@
-// ================================
-// DUKEDOM - BROWSER UI
-// ================================
+const out = document.getElementById("output")
+const input = document.getElementById("input")
 
-import { DukedomGame } from "./state.js";
-import { EndGame } from "./engine.js";
+function print(text=""){
+    out.innerText += text + "\n"
+    out.scrollTop = out.scrollHeight
+}
 
-export class DukedomUI {
+function rand(n){
+    return Math.floor(Math.random()*n)
+}
 
-    constructor(rootId = "app") {
-        this.root = document.getElementById(rootId);
-        this.game = new DukedomGame(false);
+let year=0
+let population=95
+let acres=1000
+let grain=2800
+let harvestYield=3
+let immigrants=5
+let plague=0
+let landPrice=20
+let starved=0
+let totalStarved=0
+let avgStarved=0
+let planted=0
+let eatenByRats=200
+let step="buy"
 
-        this.render();
-        this.renderReport(this.game.report.data);
-    }
+print("HAMURABI")
+print("CREATIVE COMPUTING MORRISTOWN, NEW JERSEY")
+print("")
+print("TRY YOUR HAND AT GOVERNING ANCIENT SUMERIA")
+print("FOR A TEN YEAR TERM OF OFFICE.")
+print("")
 
-    // ================================
-    // RENDER BASE LAYOUT
-    // ================================
+nextYear()
 
-    render() {
-        this.root.innerHTML = `
-            <h1>DUKEDOM</h1>
+function nextYear(){
 
-            <div id="status"></div>
+year++
 
-            <div id="report" class="panel"></div>
+if(year>10){
+    endGame()
+    return
+}
 
-            <div class="panel">
-                <h3>Decisions</h3>
+if(plague){
+population=Math.floor(population/2)
+print("A HORRIBLE PLAGUE STRUCK! HALF THE PEOPLE DIED.")
+}
 
-                <label>Food per peasant:
-                    <input type="number" id="food" value="15">
-                </label><br>
+population+=immigrants
 
-                <label>Land to buy (+) / sell (-):
-                    <input type="number" id="landTrade" value="0">
-                </label><br>
+print("")
+print("HAMURABI: I BEG TO REPORT TO YOU")
+print(`IN YEAR ${year}`)
+print(`${starved} PEOPLE STARVED.`)
+print(`${immigrants} CAME TO THE CITY.`)
+print(`POPULATION IS NOW ${population}`)
+print(`THE CITY NOW OWNS ${acres} ACRES`)
+print(`YOU HARVESTED ${harvestYield} BUSHELS PER ACRE`)
+print(`RATS ATE ${eatenByRats} BUSHELS`)
+print(`YOU NOW HAVE ${grain} BUSHELS IN STORE`)
+print("")
 
-                <label>Land to plant:
-                    <input type="number" id="plant" value="300">
-                </label><br>
+landPrice = rand(10)+17
+print(`LAND IS TRADING AT ${landPrice} BUSHELS PER ACRE`)
+print("HOW MANY ACRES DO YOU WISH TO BUY?")
 
-                <label>Mercenaries to hire:
-                    <input type="number" id="mercenaries" value="0">
-                </label><br><br>
+step="buy"
+}
 
-                <button id="nextYear">End Year</button>
-            </div>
-        `;
+input.addEventListener("keydown",function(e){
 
-        document
-            .getElementById("nextYear")
-            .addEventListener("click", () => this.nextYear());
-    }
+if(e.key!=="Enter") return
 
-    // ================================
-    // PROCESS TURN
-    // ================================
+let value=parseInt(input.value)||0
+input.value=""
 
-    nextYear() {
-        const decisions = {
-            food: parseInt(document.getElementById("food").value),
-            landTrade: parseInt(document.getElementById("landTrade").value),
-            plant: parseInt(document.getElementById("plant").value),
-            mercenaries: parseInt(document.getElementById("mercenaries").value)
-        };
+if(step==="buy"){
 
-        try {
-            const report = this.game.processYear(decisions);
-            this.renderReport(report);
-            this.renderStatus();
+if(value*landPrice>grain){
+print("YOU DON'T HAVE THAT MUCH GRAIN.")
+return
+}
 
-        } catch (e) {
+acres+=value
+grain-=value*landPrice
 
-            if (e instanceof EndGame) {
-                alert(e.message);
-                this.resetGame();
-            } else {
-                alert(e.message);
-            }
-        }
-    }
+print("HOW MANY BUSHELS DO YOU WISH TO FEED YOUR PEOPLE?")
+step="feed"
+}
 
-    // ================================
-    // RENDER REPORT
-    // ================================
+else if(step==="feed"){
 
-    renderReport(data) {
+if(value>grain){
+print("YOU DON'T HAVE THAT MUCH GRAIN.")
+return
+}
 
-        const reportDiv = document.getElementById("report");
+grain-=value
+let fed=Math.floor(value/20)
+starved=Math.max(population-fed,0)
 
-        let html = `<h3>Year ${this.game.state.year}</h3><pre>`;
+if(starved>0.45*population){
+print("YOU STARVED TOO MANY PEOPLE.")
+endGame()
+return
+}
 
-        for (let key in data) {
-            html += `${key}: ${data[key]}\n`;
-        }
+population-=starved
+totalStarved+=starved
 
-        html += `</pre>`;
+print("HOW MANY ACRES DO YOU WISH TO PLANT?")
+step="plant"
+}
 
-        reportDiv.innerHTML = html;
-    }
+else if(step==="plant"){
 
-    // ================================
-    // RENDER STATUS BAR
-    // ================================
+if(value>acres){
+print("YOU DON'T OWN THAT MUCH LAND.")
+return
+}
 
-    renderStatus() {
+if(value/2>grain){
+print("NOT ENOUGH GRAIN FOR SEED.")
+return
+}
 
-        const s = this.game.state;
+if(value>population*10){
+print("NOT ENOUGH PEOPLE TO TEND THE FIELDS.")
+return
+}
 
-        document.getElementById("status").innerHTML = `
-            <strong>Peasants:</strong> ${s.peasants} |
-            <strong>Land:</strong> ${s.land} |
-            <strong>Grain:</strong> ${s.grain} |
-            <strong>Resentment:</strong> ${s.resentment}
-        `;
-    }
+planted=value
+grain-=Math.floor(value/2)
 
-    // ================================
-    // RESET GAME
-    // ================================
+harvestYield=rand(5)+1
+let harvest=planted*harvestYield
 
-    resetGame() {
-        this.game = new DukedomGame(false);
-        this.renderReport(this.game.report.data);
-        this.renderStatus();
-    }
+eatenByRats=0
+if(rand(2)==0){
+eatenByRats=Math.floor(grain/(rand(5)+1))
+}
+
+grain=grain-eatenByRats+harvest
+
+immigrants=Math.floor((rand(5)*(20*acres+grain)/population/100)+1)
+
+plague=(Math.random()<0.15)
+
+nextYear()
+}
+
+})
+
+function endGame(){
+
+print("")
+print("YOUR TEN YEAR RULE HAS ENDED.")
+print(`TOTAL STARVED: ${totalStarved}`)
+print(`FINAL POPULATION: ${population}`)
+print(`ACRES OWNED: ${acres}`)
+print("")
+print("SO LONG FOR NOW.")
+
+input.disabled=true
 }
