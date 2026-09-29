@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mermetrik | Prueba gratuita de 30 días</title>
+<meta name="description" content="Mermetrik registra el desperdicio de su soda en segundos, calcula su costo en colones y le muestra dónde se pierde más. Pruébelo gratis por 30 días.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --verde:#1f7a4d;
+    --verde-osc:#135636;
+    --verde-claro:#e7f4ec;
+    --naranja:#f28c28;
+    --tinta:#1c2521;
+    --gris:#5b6660;
+    --borde:#dfe6e1;
+    --fondo:#fbfaf6;
+    --blanco:#ffffff;
+    --wa:#25d366;
+    --radio:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--tinta);background:var(--fondo);line-height:1.6}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  .contenedor{width:100%;max-width:1140px;margin:0 auto;padding:0 20px}
+
+  /* Barra superior */
+  header{position:sticky;top:0;z-index:10;background:rgba(251,250,246,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--borde)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;font-weight:800;font-size:1.35rem;letter-spacing:-.5px;text-decoration:none}
+  .logo img{height:40px;width:auto;max-width:180px;object-fit:contain}
+  .logo-texto span{color:var(--verde)}
+  .nav .btn{padding:10px 18px;font-size:.9rem}
+
+  /* Botones */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:999px;padding:14px 26px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s,background .15s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primario{background:var(--verde);color:#fff;box-shadow:0 6px 18px rgba(31,122,77,.28)}
+  .btn-primario:hover{background:var(--verde-osc)}
+  .btn-wa{background:var(--wa);color:#fff;box-shadow:0 6px 18px rgba(37,211,102,.3)}
+  .btn-wa svg{width:20px;height:20px;fill:currentColor}
+
+  /* Hero */
+  .hero{padding:56px 0 72px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start}
+  .etiqueta{display:inline-block;background:var(--verde-claro);color:var(--verde-osc);font-weight:700;font-size:.82rem;padding:6px 14px;border-radius:999px;margin-bottom:18px}
+  h1{font-size:clamp(2rem,4.6vw,3.3rem);line-height:1.1;letter-spacing:-1.2px;font-weight:800;margin-bottom:18px}
+  h1 em{font-style:normal;color:var(--verde)}
+  .hero p.lead{font-size:1.12rem;color:var(--gris);margin-bottom:26px;max-width:560px}
+  .video{position:relative;border-radius:var(--radio);overflow:hidden;background:#dfe6e1;aspect-ratio:16/9;box-shadow:0 18px 40px rgba(28,37,33,.14)}
+  .video video{width:100%;height:100%;object-fit:cover;display:block}
+  .beneficios-mini{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:22px;color:var(--gris);font-weight:600;font-size:.95rem}
+  .beneficios-mini span::before{content:"✓";color:var(--verde);font-weight:800;margin-right:6px}
+
+  /* Formulario */
+  .tarjeta-form{background:var(--blanco);border:1px solid var(--borde);border-radius:22px;padding:30px;box-shadow:0 20px 50px rgba(28,37,33,.1);position:sticky;top:88px}
+  .tarjeta-form h2{font-size:1.5rem;letter-spacing:-.5px;margin-bottom:4px}
+  .tarjeta-form .sub{color:var(--gris);font-size:.95rem;margin-bottom:20px}
+  .campo{margin-bottom:14px}
+  .campo label{display:block;font-weight:600;font-size:.88rem;margin-bottom:6px}
+  .campo input,.campo select{width:100%;padding:12px 14px;border:1.5px solid var(--borde);border-radius:10px;font:inherit;font-size:1rem;background:#fff;color:var(--tinta);transition:border-color .15s}
+  .campo input:focus,.campo select:focus{outline:none;border-color:var(--verde)}
+  .fila{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .tarjeta-form .btn{width:100%;margin-top:6px}
+  .separador{display:flex;align-items:center;gap:12px;color:var(--gris);font-size:.85rem;margin:16px 0}
+  .separador::before,.separador::after{content:"";flex:1;height:1px;background:var(--borde)}
+  .nota{font-size:.8rem;color:var(--gris);text-align:center;margin-top:12px}
+  .gracias{display:none;text-align:center;padding:20px 0}
+  .gracias .icono{width:60px;height:60px;border-radius:50%;background:var(--verde-claro);color:var(--verde);font-size:1.8rem;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-weight:800}
+  .gracias h3{font-size:1.3rem;margin-bottom:6px}
+  .gracias p{color:var(--gris)}
+
+  /* Secciones */
+  section{padding:72px 0}
+  .titulo-seccion{text-align:center;max-width:680px;margin:0 auto 48px}
+  .titulo-seccion h2{font-size:clamp(1.7rem,3.4vw,2.4rem);letter-spacing:-.8px;line-height:1.15;margin-bottom:12px}
+  .titulo-seccion p{color:var(--gris);font-size:1.05rem}
+
+  .funcion{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:64px}
+  .funcion:last-child{margin-bottom:0}
+  .funcion.invertida .funcion-img{order:2}
+  .funcion-img{border-radius:var(--radio);overflow:hidden;background:#e4ebe6;aspect-ratio:4/3;box-shadow:0 14px 34px rgba(28,37,33,.1)}
+  .funcion-img img{width:100%;height:100%;object-fit:cover}
+  .numero{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--verde);color:#fff;font-weight:800;margin-bottom:14px}
+  .funcion h3{font-size:1.55rem;letter-spacing:-.4px;line-height:1.2;margin-bottom:10px}
+  .funcion p{color:var(--gris);font-size:1.03rem}
+
+  .banda{background:var(--verde-osc);color:#fff}
+  .pasos{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .paso{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:var(--radio);padding:26px}
+  .paso b{display:block;font-size:2rem;color:var(--naranja);margin-bottom:6px}
+  .paso h4{font-size:1.15rem;margin-bottom:6px}
+  .paso p{color:rgba(255,255,255,.8);font-size:.97rem}
+  .banda .titulo-seccion p{color:rgba(255,255,255,.8)}
+
+  .cta-final{text-align:center}
+  .cta-final .caja{background:var(--blanco);border:1px solid var(--borde);border-radius:26px;padding:56px 24px;box-shadow:0 20px 50px rgba(28,37,33,.08)}
+  .cta-final h2{font-size:clamp(1.7rem,3.4vw,2.4rem);letter-spacing:-.8px;margin-bottom:12px}
+  .cta-final p{color:var(--gris);margin-bottom:26px;font-size:1.05rem}
+  .botones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+
+  footer{padding:30px 0;border-top:1px solid var(--borde);color:var(--gris);font-size:.88rem;text-align:center}
+
+  /* WhatsApp flotante */
+  .wa-flotante{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:20;transition:transform .15s}
+  .wa-flotante:hover{transform:scale(1.07)}
+  .wa-flotante svg{width:30px;height:30px;fill:#fff}
+
+  @media (max-width:900px){
+    .hero-grid,.funcion{grid-template-columns:1fr;gap:28px}
+    .funcion.invertida .funcion-img{order:0}
+    .tarjeta-form{position:static}
+    .pasos{grid-template-columns:1fr}
+    section{padding:56px 0}
+  }
+  @media (max-width:480px){
+    .fila{grid-template-columns:1fr;gap:0}
+    .tarjeta-form{padding:22px}
+    .nav .btn{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="contenedor nav">
+    <a href="#" class="logo">
+      <!-- LOGO: ponga su archivo logo.png en la misma carpeta -->
+      <img src="logo.png" alt="Mermetrik" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+      <span class="logo-texto" style="display:none">Mer<span>metrik</span></span>
+    </a>
+    <a href="#registro" class="btn btn-primario">Probar gratis</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<main>
+<div class="hero">
+  <div class="contenedor hero-grid">
+    <div>
+      <span class="etiqueta">Para sodas y restaurantes en Costa Rica</span>
+      <h1>Deje de adivinar cuánto <em>pierde su soda.</em></h1>
+      <p class="lead">Mermetrik registra el desperdicio en segundos, calcula su costo en colones, muestra en qué productos y días se pierde más, y compara resultados después de aplicar un cambio.</p>
+
+      <!-- VIDEO CORTO: cambie video.mp4 por su video. 1.png se muestra como portada -->
+      <div class="video">
+        <video controls playsinline preload="none" poster="1.png">
+          <source src="video.mp4" type="video/mp4">
+          Su navegador no puede reproducir este video.
+        </video>
+      </div>
+
+      <div class="beneficios-mini">
+        <span>Desde el celular</span>
+        <span>Costos en colones</span>
+        <span>Sin complicarse</span>
+      </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="tarjeta-form" id="registro">
+      <div id="formulario-contenido">
+        <h2>Regístrese gratis por 30 días</h2>
+        <p class="sub">Sin tarjeta. Empiece a medir hoy mismo.</p>
+        <form id="form-registro">
+          <div class="campo">
+            <label for="nombre">Nombre completo</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ej: María Solís" required>
+          </div>
+          <div class="campo">
+            <label for="negocio">Nombre de su soda o negocio</label>
+            <input type="text" id="negocio" name="negocio" placeholder="Ej: Soda La Esquina" required>
+          </div>
+          <div class="fila">
+            <div class="campo">
+              <label for="telefono">WhatsApp</label>
+              <input type="tel" id="telefono" name="telefono" placeholder="8888-8888" pattern="[0-9\-\s\+]{8,}" required>
+            </div>
+            <div class="campo">
+              <label for="provincia">Provincia</label>
+              <select id="provincia" name="provincia" required>
+                <option value="" disabled selected>Elija una</option>
+                <option>San José</option>
+                <option>Alajuela</option>
+                <option>Cartago</option>
+                <option>Heredia</option>
+                <option>Guanacaste</option>
+                <option>Puntarenas</option>
+                <option>Limón</option>
+              </select>
+            </div>
+          </div>
+          <div class="campo">
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" name="correo" placeholder="correo@ejemplo.com" required>
+          </div>
+          <button type="submit" class="btn btn-primario">Empezar mi prueba gratis</button>
+        </form>
+
+        <div class="separador">o si prefiere</div>
+
+        <a class="btn btn-wa" style="width:100%" href="https://wa.me/50600000000?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20sobre%20Mermetrik" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.64-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.04 21.5h-.01a9.4 9.4 0 0 1-4.8-1.31l-.34-.2-3.57.93.95-3.48-.22-.36a9.4 9.4 0 0 1-1.44-5.02c0-5.2 4.24-9.44 9.45-9.44a9.4 9.4 0 0 1 6.68 2.77 9.38 9.38 0 0 1 2.76 6.68c0 5.21-4.24 9.44-9.44 9.44m8.04-17.48A11.3 11.3 0 0 0 12.04.7C5.77.7.67 5.8.67 12.06c0 2 .52 3.96 1.52 5.68L.57 23.64l6.03-1.58a11.35 11.35 0 0 0 5.43 1.38h.01c6.26 0 11.36-5.1 11.36-11.36 0-3.04-1.18-5.89-3.32-8.04"/></svg>
+          Hablar por WhatsApp
+        </a>
+        <p class="nota">Sus datos son privados. No compartimos su información.</p>
+      </div>
+
+      <div class="gracias" id="gracias">
+        <div class="icono">✓</div>
+        <h3>¡Listo, ya está registrado!</h3>
+        <p>Le escribiremos por WhatsApp muy pronto para activar sus 30 días gratis.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FUNCIONES -->
+<section>
+  <div class="contenedor">
+    <div class="titulo-seccion">
+      <h2>Todo lo que necesita para dejar de perder plata</h2>
+      <p>Más control y ahorro sin complicarse, desde el celular.</p>
+    </div>
+
+    <div class="funcion">
+      <div class="funcion-img"><img src="2.png" alt="Registro rápido del desperdicio desde el celular"></div>
+      <div>
+        <span class="numero">1</span>
+        <h3>Registre el desperdicio en segundos</h3>
+        <p>Anote lo que se bota al final del día con un par de toques. Sin cuadernos ni hojas de Excel: todo queda guardado en su celular.</p>
+      </div>
+    </div>
+
+    <div class="funcion invertida">
+      <div class="funcion-img"><img src="3.png" alt="Costo del desperdicio en colones por producto y día"></div>
+      <div>
+        <span class="numero">2</span>
+        <h3>Vea cuánto le cuesta, en colones</h3>
+        <p>Mermetrik calcula el costo real de lo que se pierde y le muestra en qué productos y qué días se va más plata.</p>
+      </div>
+    </div>
+
+    <div class="funcion">
+      <div class="funcion-img"><img src="4.png" alt="Comparación de resultados antes y después de un cambio"></div>
+      <div>
+        <span class="numero">3</span>
+        <h3>Compare antes y después de cada cambio</h3>
+        <p>¿Preparó menos gallo pinto los lunes? ¿Cambió de proveedor? Vea con números si el cambio realmente le ahorró dinero.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="banda">
+  <div class="contenedor">
+    <div class="titulo-seccion">
+      <h2>Empiece en 3 pasos</h2>
+      <p>En menos de 5 minutos ya está midiendo.</p>
+    </div>
+    <div class="pasos">
+      <div class="paso"><b>01</b><h4>Regístrese gratis</h4><p>Llene el formulario y le activamos 30 días de prueba.</p></div>
+      <div class="paso"><b>02</b><h4>Anote lo que se pierde</h4><p>Cada día, registre el desperdicio desde el celular en segundos.</p></div>
+      <div class="paso"><b>03</b><h4>Ahorre con datos</h4><p>Vea dónde se pierde más, haga cambios y compruebe el ahorro.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="contenedor">
+    <div class="caja">
+      <h2>Deje de adivinar. Empiece a medir.</h2>
+      <p>30 días gratis para ver cuánto puede ahorrar su soda.</p>
+      <div class="botones">
+        <a href="#registro" class="btn btn-primario">Regístrese gratis por 30 días</a>
+        <a class="btn btn-wa" href="https://wa.me/50600000000?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20sobre%20Mermetrik" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04.7C5.77.7.67 5.8.67 12.06c0 2 .52 3.96 1.52 5.68L.57 23.64l6.03-1.58a11.35 11.35 0 0 0 5.43 1.38h.01c6.26 0 11.36-5.1 11.36-11.36S18.3.7 12.04.7m5.43 13.68c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.64-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49 2.98 1.29 2.98.86 3.52.81.54-.05 1.75-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35"/></svg>
+          Hablar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="contenedor">© 2026 Mermetrik · Hecho en Costa Rica</div>
+</footer>
+
+<a class="wa-flotante" href="https://wa.me/50600000000?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20sobre%20Mermetrik" target="_blank" rel="noopener" aria-label="Hablar por WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04.7C5.77.7.67 5.8.67 12.06c0 2 .52 3.96 1.52 5.68L.57 23.64l6.03-1.58a11.35 11.35 0 0 0 5.43 1.38h.01c6.26 0 11.36-5.1 11.36-11.36S18.3.7 12.04.7m5.43 13.68c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.64-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49 2.98 1.29 2.98.86 3.52.81.54-.05 1.75-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35"/></svg>
+</a>
+
+<script>
+  // El formulario aún no envía datos a ningún lado.
+  // Conéctelo a su servicio (Formspree, Google Forms, su backend, etc.) aquí.
+  document.getElementById('form-registro').addEventListener('submit', function(e){
+    e.preventDefault();
+    document.getElementById('formulario-contenido').style.display = 'none';
+    document.getElementById('gracias').style.display = 'block';
+  });
+</script>
+</body>
+</html>
